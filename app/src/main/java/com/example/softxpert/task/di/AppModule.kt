@@ -1,6 +1,10 @@
 package com.example.softxpert.task.di
 
+import com.example.softxpert.task.data.MoviesRepositoryImpl
 import com.example.softxpert.task.data.remote.ApiService
+import com.example.softxpert.task.data.remote.RemoteMoviesDataSource
+import com.example.softxpert.task.data.remote.RemoteMoviesDataSourceImpl
+import com.example.softxpert.task.domain.MoviesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,5 +49,17 @@ object AppModule {
     @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideRemoteMoviesDataSource(apiService: ApiService): RemoteMoviesDataSource {
+        return RemoteMoviesDataSourceImpl(apiService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMoviesRepository(remoteMoviesDataSource: RemoteMoviesDataSource): MoviesRepository {
+        return MoviesRepositoryImpl(remoteMoviesDataSource)
+    }
 
 }
