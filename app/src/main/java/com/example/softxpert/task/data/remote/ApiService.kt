@@ -11,7 +11,8 @@ interface ApiService {
 
     @GET("discover/movie")
     suspend fun getMovies(
-        @Query("with_genres") withGenres: String? = null,
+        @Query("page") page: Int,
+        @Query("with_genres") withGenres: Int? = null,
         @Query("api_key") apiKey: String = BuildConfig.API_KEY,
         @Query("language") language: String = "en-US",
     ): Response<MoviesResponse>

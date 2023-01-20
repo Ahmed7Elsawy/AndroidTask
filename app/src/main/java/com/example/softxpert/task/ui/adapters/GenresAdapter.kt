@@ -43,9 +43,6 @@ class GenresAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresViewHolder {
         val itemBinding =
             GenresItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-//        return itemBinding(itemBinding)
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.genres_item, parent, false)
-
         return GenresViewHolder(itemBinding, onGenreClicked)
     }
 

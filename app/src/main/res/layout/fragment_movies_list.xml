@@ -18,26 +18,33 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:imeOptions="actionSearch"
+            android:autofillHints=""
             android:background="@android:color/transparent"
             android:hint="@string/search"
-            android:autofillHints="" />
+            android:imeOptions="actionSearch"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:inputType="text" />
 
         <ImageView
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/small_margin"
-            android:src="@drawable/ic_search"
-            android:contentDescription="@string/search_icon" />
+            android:contentDescription="@string/search_icon"
+            android:src="@drawable/ic_search" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/genres_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movies_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="@dimen/small_margin" />
 
 </LinearLayout>

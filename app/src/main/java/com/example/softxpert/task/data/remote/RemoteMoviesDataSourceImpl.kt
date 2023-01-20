@@ -5,8 +5,8 @@ import com.example.softxpert.task.data.models.MoviesResponse
 import retrofit2.Response
 
 class RemoteMoviesDataSourceImpl(private val apiService: ApiService) : RemoteMoviesDataSource {
-    override suspend fun getMovies(genresId: String?): Response<MoviesResponse> {
-        return apiService.getMovies(genresId)
+    override suspend fun getMovies(page: Int, genresId: Int?): Response<MoviesResponse> {
+        return apiService.getMovies(page, genresId)
     }
 
     override suspend fun getGenres(): Response<GenresResponse> {

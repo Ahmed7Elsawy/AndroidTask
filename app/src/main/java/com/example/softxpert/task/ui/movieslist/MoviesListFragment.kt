@@ -10,12 +10,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.softxpert.task.R
 import com.example.softxpert.task.data.Resource
 import com.example.softxpert.task.databinding.FragmentMoviesListBinding
 import com.example.softxpert.task.ui.adapters.GenresAdapter
+import com.example.softxpert.task.ui.adapters.MoviesAdapter
+import com.example.softxpert.task.ui.utils.MarginItemDecoration
 import com.example.softxpert.task.ui.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -26,6 +36,7 @@ class MoviesListFragment : Fragment() {
 
     private val moviesListViewModel: MoviesListViewModel by viewModels()
     private lateinit var genresAdapter: GenresAdapter
+    private lateinit var moviesAdapter: MoviesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,25 +45,20 @@ class MoviesListFragment : Fragment() {
         _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
         (activity as AppCompatActivity?)?.supportActionBar?.hide()
 
-        binding.searchButton.setOnClickListener {
-            binding.searchEt.clearFocus()
-            hideKeyboard()
-            handleSearch(binding.searchEt.text.toString())
-        }
+        initializeSearchBar()
+        initializeMoviesList()
+        initializeGenresList()
 
-        binding.searchEt.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                handleSearch(v.text.toString())
-            }
-            false
-        }
+        return binding.root
+    }
 
+    private fun initializeGenresList() {
         genresAdapter = GenresAdapter { moviesListViewModel.selectGenre(it) }
-        binding.genresList.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.genresList.adapter = genresAdapter
-
-
+        binding.genresList.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = genresAdapter
+        }
         moviesListViewModel.genresResponse.observe(viewLifecycleOwner) { genresResponse ->
             if (genresResponse is Resource.Success) {
                 genresResponse.data?.genres?.let {
@@ -63,8 +69,46 @@ class MoviesListFragment : Fragment() {
                     .show()
             }
         }
+    }
 
-        return binding.root
+    private fun initializeMoviesList() {
+        moviesAdapter = MoviesAdapter { navigateToMovieDetails(it) }
+        binding.moviesList.apply {
+            adapter = moviesAdapter
+            setHasFixedSize(true)
+            layoutManager =
+                GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+            addItemDecoration(
+                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.small_margin))
+            )
+        }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                moviesListViewModel.items.collectLatest {
+                    moviesAdapter.submitData(it)
+                }
+            }
+        }
+    }
+
+    private fun navigateToMovieDetails(movieId: Int) {
+        val action =
+            MoviesListFragmentDirections.actionMoviesListFragmentToMovieDetailsFragment(movieId)
+        findNavController().navigate(action)
+    }
+
+    private fun initializeSearchBar() {
+        binding.searchButton.setOnClickListener {
+            binding.searchEt.clearFocus()
+            hideKeyboard()
+            handleSearch(binding.searchEt.text.toString())
+        }
+        binding.searchEt.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                handleSearch(v.text.toString())
+            }
+            false
+        }
     }
 
     override fun onDestroyView() {

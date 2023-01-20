@@ -5,6 +5,6 @@ import com.example.softxpert.task.data.models.MoviesResponse
 import retrofit2.Response
 
 interface RemoteMoviesDataSource {
-    suspend fun getMovies(genresId: String?): Response<MoviesResponse>
+    suspend fun getMovies(page: Int, genresId: Int?): Response<MoviesResponse>
     suspend fun getGenres(): Response<GenresResponse>
 }

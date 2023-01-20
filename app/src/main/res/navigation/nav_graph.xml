@@ -12,11 +12,20 @@
         tools:layout="@layout/fragment_movies_list" >
         <action
             android:id="@+id/action_moviesListFragment_to_movieDetailsFragment"
-            app:destination="@id/movieDetailsFragment" />
+            app:destination="@id/movieDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.softxpert.task.ui.moviedetails.MovieDetailsFragment"
         android:label="Movie Details"
-        tools:layout="@layout/fragment_movie_details" />
+        tools:layout="@layout/fragment_movie_details">
+        <argument
+            android:name="movie_id"
+            app:argType="integer" />
+    </fragment>
 </navigation>
