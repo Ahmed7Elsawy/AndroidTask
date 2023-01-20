@@ -1,5 +1,5 @@
 package com.example.softxpert.task.data.models
 
 data class GenresResponse(
-    val genres: List<Genre>
+    var genres: List<Genre>
 )
