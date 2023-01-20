@@ -1,7 +1,9 @@
 package com.example.softxpert.task.data.models
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Movie(
     val adult: Boolean,
     @SerializedName("backdrop_path")

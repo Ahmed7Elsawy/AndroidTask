@@ -3,5 +3,6 @@
     <dimen name="small_margin">8dp</dimen>
     <dimen name="large_margin">16dp</dimen>
     <dimen name="default_font_size">10sp</dimen>
+    <dimen name="details_font_size">14sp</dimen>
 
 </resources>

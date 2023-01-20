@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.softxpert.task.R
 import com.example.softxpert.task.data.Resource
+import com.example.softxpert.task.data.models.Movie
 import com.example.softxpert.task.databinding.FragmentMoviesListBinding
 import com.example.softxpert.task.ui.adapters.GenresAdapter
 import com.example.softxpert.task.ui.adapters.MoviesAdapter
@@ -26,6 +27,8 @@ import com.example.softxpert.task.ui.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 @AndroidEntryPoint
@@ -91,9 +94,10 @@ class MoviesListFragment : Fragment() {
         }
     }
 
-    private fun navigateToMovieDetails(movieId: Int) {
-        val action =
-            MoviesListFragmentDirections.actionMoviesListFragmentToMovieDetailsFragment(movieId)
+    private fun navigateToMovieDetails(movie: Movie) {
+        val action = MoviesListFragmentDirections.actionMoviesListFragmentToMovieDetailsFragment(
+            Json.encodeToString(movie)
+        )
         findNavController().navigate(action)
     }
 
