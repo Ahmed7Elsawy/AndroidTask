@@ -1,4 +1,4 @@
-package com.example.softxpert.task.ui.usecase
+package com.example.softxpert.task.domain.usecase
 
 import com.example.softxpert.task.data.Resource
 import com.example.softxpert.task.data.models.MoviesResponse
