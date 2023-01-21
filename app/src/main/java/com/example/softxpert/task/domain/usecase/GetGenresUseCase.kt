@@ -11,7 +11,7 @@ class GetGenresUseCase @Inject constructor(private val moviesRepository: MoviesR
     suspend operator fun invoke(): Resource<GenresResponse> {
         val movieResponse = moviesRepository.getGenres()
         val modifiedGenresList = movieResponse.data?.genres?.toMutableList()?.apply {
-            map { it.isSelected == false }
+            map { it.isSelected = false }
             add(0, Genre(null, "All", true))
         }?.toList()
 
