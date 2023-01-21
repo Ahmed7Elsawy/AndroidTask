@@ -11,7 +11,7 @@ import com.example.softxpert.task.databinding.ImageItemBinding
 import com.example.softxpert.task.ui.moviedetails.showImage
 import java.util.*
 
-class ViewPagerAdapter(val context: Context, private val imageList: List<String>) : PagerAdapter() {
+class ViewPagerAdapter(val context: Context, private val imageList: List<String?>) : PagerAdapter() {
     override fun getCount(): Int {
         return imageList.size
     }

@@ -14,6 +14,7 @@ import com.example.softxpert.task.data.models.Movie
 import com.example.softxpert.task.domain.MoviesPagingSource
 import com.example.softxpert.task.domain.usecase.GetGenresUseCase
 import com.example.softxpert.task.domain.usecase.GetMoviesUseCase
+import com.example.softxpert.task.domain.usecase.SearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -29,19 +30,29 @@ private const val ITEMS_PER_PAGE = 20
 class MoviesListViewModel @Inject constructor(
     private val getGenresUseCase: GetGenresUseCase,
     private val getMoviesUseCase: GetMoviesUseCase,
+    private val searchMoviesUseCase: SearchMoviesUseCase,
 ) : ViewModel() {
 
-    private val genreId = MutableStateFlow<Int?>(null)
+    private val refreshList = MutableStateFlow(true)
+    private var genreId: Int? = null
+    private var query: String = ""
 
     private val _genresResponse: MutableLiveData<Resource<GenresResponse>> =
         MutableLiveData(Resource.Loading())
     val genresResponse: LiveData<Resource<GenresResponse>> = _genresResponse
 
 
-    val items: Flow<PagingData<Movie>> = genreId.flatMapLatest { genreId ->
+    val moviesPagingData: Flow<PagingData<Movie>> = refreshList.flatMapLatest {
         Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE, enablePlaceholders = false),
-            pagingSourceFactory = { MoviesPagingSource(getMoviesUseCase, genreId) }
+            pagingSourceFactory = {
+                MoviesPagingSource(
+                    getMoviesUseCase,
+                    searchMoviesUseCase,
+                    genreId,
+                    query
+                )
+            }
         ).flow.cachedIn(viewModelScope)
     }
 
@@ -58,7 +69,9 @@ class MoviesListViewModel @Inject constructor(
 
     fun selectGenre(newGenreId: Int?) {
         viewModelScope.launch {
-            genreId.value = newGenreId
+            genreId = newGenreId
+            // update the value to refresh moviesPagingData
+            refreshList.value = !refreshList.value
             val genres =
                 genresResponse.value?.data?.genres?.map { genre -> genre.copy(isSelected = genre.id == newGenreId) }
 
@@ -68,6 +81,11 @@ class MoviesListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun searchMovie(newQuery: String) {
+        query = newQuery
+        refreshList.value = !refreshList.value
     }
 
 }

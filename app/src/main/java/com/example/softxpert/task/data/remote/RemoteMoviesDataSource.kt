@@ -7,4 +7,5 @@ import retrofit2.Response
 interface RemoteMoviesDataSource {
     suspend fun getMovies(page: Int, genresId: Int?): Response<MoviesResponse>
     suspend fun getGenres(): Response<GenresResponse>
+    suspend fun searchMovie(page: Int, query: String): Response<MoviesResponse>
 }

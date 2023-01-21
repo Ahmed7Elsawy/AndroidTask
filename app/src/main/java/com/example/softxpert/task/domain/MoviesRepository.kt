@@ -7,4 +7,5 @@ import com.example.softxpert.task.data.models.MoviesResponse
 interface MoviesRepository {
     suspend fun getMovies(page: Int, genresId: Int?): Resource<MoviesResponse>
     suspend fun getGenres(): Resource<GenresResponse>
+    suspend fun searchMovie(page: Int, query: String): Resource<MoviesResponse>
 }

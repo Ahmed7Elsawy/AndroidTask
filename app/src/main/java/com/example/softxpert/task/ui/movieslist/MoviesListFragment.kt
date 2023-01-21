@@ -1,7 +1,6 @@
 package com.example.softxpert.task.ui.movieslist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,7 +86,7 @@ class MoviesListFragment : Fragment() {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                moviesListViewModel.items.collectLatest {
+                moviesListViewModel.moviesPagingData.collectLatest {
                     moviesAdapter.submitData(it)
                 }
             }
@@ -110,6 +109,7 @@ class MoviesListFragment : Fragment() {
         binding.searchEt.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 handleSearch(v.text.toString())
+                hideKeyboard()
             }
             false
         }
@@ -121,7 +121,7 @@ class MoviesListFragment : Fragment() {
     }
 
     private fun handleSearch(query: String) {
-        Log.d("MoviesListFragment", query)
+        moviesListViewModel.searchMovie(query)
     }
 
 }

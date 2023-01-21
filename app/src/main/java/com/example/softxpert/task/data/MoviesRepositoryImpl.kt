@@ -14,4 +14,8 @@ class MoviesRepositoryImpl(private val remoteMoviesDataSource: RemoteMoviesDataS
     override suspend fun getGenres(): Resource<GenresResponse> {
         return safeApiCall { remoteMoviesDataSource.getGenres() }
     }
+
+    override suspend fun searchMovie(page: Int, query: String): Resource<MoviesResponse> {
+        return safeApiCall { remoteMoviesDataSource.searchMovie(page, query) }
+    }
 }

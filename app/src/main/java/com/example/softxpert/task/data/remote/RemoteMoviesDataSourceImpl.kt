@@ -12,4 +12,8 @@ class RemoteMoviesDataSourceImpl(private val apiService: ApiService) : RemoteMov
     override suspend fun getGenres(): Response<GenresResponse> {
         return apiService.getGenres()
     }
+
+    override suspend fun searchMovie(page: Int, query: String): Response<MoviesResponse> {
+        return apiService.searchMovie(page, query)
+    }
 }

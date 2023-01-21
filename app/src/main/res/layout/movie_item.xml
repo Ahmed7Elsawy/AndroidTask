@@ -7,14 +7,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/movie_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/movie_image"
+            android:minHeight="120dp"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,30 +25,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:textSize="@dimen/default_font_size"
             android:textStyle="normal"
-            android:maxLines="1"
-            android:ellipsize="marquee"
-            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_image"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/movie_image" />
 
         <TextView
             android:id="@+id/release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
+            android:ellipsize="marquee"
+            android:maxLines="1"
             android:textSize="@dimen/default_font_size"
             android:textStyle="normal"
-            android:maxLines="1"
-            android:ellipsize="marquee"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/movie_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
